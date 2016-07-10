@@ -15,15 +15,53 @@ class Movetree
 
 	def add_move(move)
 	  current_depth+=1
+	  num_moves+=1
 	  if (move.x==@current_move.x-2) && (move.y==@current_move.y+1) && in_board?(current_move.x-2,current_move.y+1) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
+	  
+	  if (move.x==@current_move.x-1) && (move.y==@current_move.y+2) && in_board?(current_move.x-1,current_move.y+2) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
 
+	  if (move.x==@current_move.x+1) && (move.y==@current_move.y+2) && in_board?(current_move.x+1,current_move.y+2) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
 
+	  if (move.x==@current_move.x+2) && (move.y==@current_move.y+1) && in_board?(current_move.x+2,current_move.y+1) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
 
+	  if (move.x==@current_move.x-2) && (move.y==@current_move.y-1) && in_board?(current_move.x-2,current_move.y-1) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
+	  
+	  if (move.x==@current_move.x-1) && (move.y==@current_move.y-2) && in_board?(current_move.x-1,current_move.y-2) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
+
+	  if (move.x==@current_move.x-1) && (move.y==@current_move.y-2) && in_board?(current_move.x-1,current_move.y-2) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
+
+	  if (move.x==@current_move.x+1) && (move.y==@current_move.y-2) && in_board?(current_move.x+1,current_move.y-2) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
+
+	  if (move.x==@current_move.x+2) && (move.y==@current_move.y-1) && in_board?(current_move.x+2,current_move.y-1) && current_depth<=max_depth
+	  	@current_move.children << move
+	  end
+
+	end
 
 	def in_board?(x,y)
 		return false if  x<0 || y<0 || x>max_x || y>max_y
 		return true
 	end
 end
+
+tree=Movetree.new([2.2],1)
+
+
 
 
