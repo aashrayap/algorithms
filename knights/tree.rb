@@ -1,67 +1,82 @@
 Move=Struct.new(:x,:y,:depth,:children,:parent)
 
-class Movetree
-	def initialize(coordinate,max_depth=1)
-	  @max_depth=max_depth
-	  @current_depth=0
-	  @num_moves=-1
-	  @max_x=4
-	  @max_y=4
-	  @starting_square=Move.new(coordinate[0],coordinate[1],0,[],nil)
-	  @current_move=@starting_square
-	end
+class MoveTree
 
-	attr_accessor 
+  attr_reader :start_move, :max_x, :max_y, :max_depth
 
-	def add_move(move)
-	  current_depth+=1
-	  num_moves+=1
-	  if (move.x==@current_move.x-2) && (move.y==@current_move.y+1) && in_board?(current_move.x-2,current_move.y+1) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
-	  
-	  if (move.x==@current_move.x-1) && (move.y==@current_move.y+2) && in_board?(current_move.x-1,current_move.y+2) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
+  def initialize(coordinates, max_depth)
+    @max_x = 4
+    @max_y = 4
+    @max_depth = max_depth
+    @current_depth = 0
+    @move_count = 0
+    @start_move = Move.new(coordinates[0], coordinates[1], @current_depth, [], nil)
+    @move_count +=1
+     add_move(@start_move) if @current_depth < @max_depth
+  end
 
-	  if (move.x==@current_move.x+1) && (move.y==@current_move.y+2) && in_board?(current_move.x+1,current_move.y+2) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
 
-	  if (move.x==@current_move.x+2) && (move.y==@current_move.y+1) && in_board?(current_move.x+2,current_move.y+1) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
+  def add_move(move)
+    @current_depth+=1
+    if in_bounds?(move.x+2, move.y+1) && @current_depth<= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x+2, move.y+1, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x+2, move.y-1) && @current_depth<= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x+2, move.y-1, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x-2, move.y+1) && @current_depth <= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x-2, move.y+1, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x-2, move.y-1) && @current_depth<= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x-2, move.y-1, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x+1, move.y+2) && @current_depth<= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x+1, move.y+2, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x+1, move.y-2) && @current_depth<= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x+1, move.y-2, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x-1, move.y+2) && @current_depth <= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x-1, move.y+2, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+    if in_bounds?(move.x-1, move.y-2) && @current_depth <= @max_depth
+       @move_count+=1
+       new_child = Move.new(move.x-1, move.y-2, @current_depth, [], move)
+       move.children << new_child
+                  add_move(new_child)
+    end
+   @current_depth-=1
+  end
 
-	  if (move.x==@current_move.x-2) && (move.y==@current_move.y-1) && in_board?(current_move.x-2,current_move.y-1) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
-	  
-	  if (move.x==@current_move.x-1) && (move.y==@current_move.y-2) && in_board?(current_move.x-1,current_move.y-2) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
+  def in_bounds?(x,y)
+    return false if x > @max_x || y > @max_y || x < 0 || y < 0
+    return true
+  end
 
-	  if (move.x==@current_move.x-1) && (move.y==@current_move.y-2) && in_board?(current_move.x-1,current_move.y-2) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
 
-	  if (move.x==@current_move.x+1) && (move.y==@current_move.y-2) && in_board?(current_move.x+1,current_move.y-2) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
+  def inspect
+    puts "Your tree has #{@move_count} Move nodes and a maximum depth of #{@max_depth}."
+  end
 
-	  if (move.x==@current_move.x+2) && (move.y==@current_move.y-1) && in_board?(current_move.x+2,current_move.y-1) && current_depth<=max_depth
-	  	@current_move.children << move
-	  end
-
-	end
-
-	def in_board?(x,y)
-		return false if  x<0 || y<0 || x>max_x || y>max_y
-		return true
-	end
 end
-
-tree=Movetree.new([2.2],1)
-
-
-
-
