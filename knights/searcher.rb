@@ -20,7 +20,7 @@ class KnightSearcher
   		@exit=2
   		return
   	end
-  	unless @exit==5
+  	unless @exit==2
   	  queue_children
   	  @pointer=@queue.dequeue
   	  bfs_for(target_coord)
@@ -50,5 +50,5 @@ end
 tree=MoveTree.new([4,4],4)
 tree.inspect
 searcher=KnightSearcher.new(tree)
-final_coord=searcher.bfs_for([3,0])
+final_coord=searcher.bfs_for([4,4])
 
