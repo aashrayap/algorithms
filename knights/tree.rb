@@ -78,5 +78,7 @@ class MoveTree
   def inspect
     puts "Your tree has #{@move_count} Move nodes and a maximum depth of #{@max_depth}."
   end
-
 end
+
+
+
