@@ -14,7 +14,7 @@ class KnightSearcher
 
   def bfs_for(target_coord)
   	@target_coord=target_coord
-  	if check_node?
+  	if check_node_bfs?
   		print "Found in #{@counter} moves"
   		@queue=Queue.new
   		@exit=2
@@ -24,11 +24,22 @@ class KnightSearcher
   	  queue_children
   	  @pointer=@queue.dequeue
   	  bfs_for(target_coord)
- 	end
+  	end
+  end
+
+  def dfs_for(target_coord)
+    @target_coord=target_coord
+    if check_node_dfs?
+      puts "found"
+      @exit=2
+    end
+    unless @exit==2
+      
+
   end
 
 
-  def check_node?
+  def check_node_bfs?
   	@counter+=1
   	return false if @pointer.children.nil?
   	@pointer.children.each do |child_node|
@@ -42,10 +53,21 @@ class KnightSearcher
   		@queue.enqueue(child_node)
   	end
   end
+
+  def check_node_dfs?
+    @counter+=1
+    return true if (@pointer.x==@target_coord[0] && @pointer.y==@target_coord[1])
+    return false
+  end
+
+
+
 end
 
 
 tree=MoveTree.new([4,4],4)
 tree.inspect
 searcher=KnightSearcher.new(tree)
-final_coord=searcher.bfs_for([3,0])
+# final_coord=searcher.bfs_for([3,0])
+searcher.dfs_for([2,3])
+
