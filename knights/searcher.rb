@@ -27,17 +27,6 @@ class KnightSearcher
   	end
   end
 
-  def dfs_for(target_coord)
-    @target_coord=target_coord
-    if check_node_dfs?
-      puts "found"
-      @exit=2
-    end
-    unless @exit==2
-      
-
-  end
-
 
   def check_node_bfs?
   	@counter+=1
@@ -54,13 +43,6 @@ class KnightSearcher
   	end
   end
 
-  def check_node_dfs?
-    @counter+=1
-    return true if (@pointer.x==@target_coord[0] && @pointer.y==@target_coord[1])
-    return false
-  end
-
-
 
 end
 
@@ -68,6 +50,5 @@ end
 tree=MoveTree.new([4,4],4)
 tree.inspect
 searcher=KnightSearcher.new(tree)
-# final_coord=searcher.bfs_for([3,0])
-searcher.dfs_for([2,3])
+final_coord=searcher.bfs_for([3,0])
 
